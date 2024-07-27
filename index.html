@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation By Arun</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            padding: 20px 100px;
+            background-color: aqua;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .container h2 {
+            text-align: center;
+            font-size: 2rem;
+            color: rgb(7, 80, 144);
+            margin-bottom: 20px;
+        }
+        .container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: blueviolet;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            color: white;
+            background-color: blueviolet;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: darkviolet;
+        }
+        .form-group .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+        .form-group .checkbox-container input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .form-group .checkbox-container label {
+            margin: 0;
+        }
+        .error {
+            color: red;
+            margin: 0;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form action="" onsubmit="return validateform()">
+            <!-- Username -->
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" placeholder="Enter Your Username">
+                <p id="usererror" class="error"></p>
+            </div>
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Enter Your Password">
+                <p id="passerror" class="error"></p>
+            </div>
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Enter Your Email">
+                <p id="emailerror" class="error"></p>
+            </div>
+            <!-- Phone -->
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" placeholder="Enter Your Phone Number">
+                <p id="phoneerror" class="error"></p>
+            </div>
+            <!-- Checkbox -->
+            <div class="form-group">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="terms">
+                    <label for="terms">I agree to the terms and conditions</label>
+                </div>
+                <p id="termserror" class="error"></p>
+            </div>
+            <!-- Combo box -->
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <select id="country">
+                    <option value="">Select Your Country</option>
+                    <option value="USA">USA</option>
+                    <option value="India">India</option>
+                    <option value="Nepal">Nepal</option>
+                </select>
+                <p id="countryerror" class="error"></p>
+            </div>
+            <div class="form-group">
+                <button type="submit" id="btn">Login</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        function validateform() {
+            let username = document.getElementById('username');
+            let password = document.getElementById('password');
+            let email = document.getElementById('email');
+            let phone = document.getElementById('phone');
+            let terms = document.getElementById('terms');
+            let country = document.getElementById('country');
+
+            let flag = true;
+
+            // Username validation
+            if (username.value == '') {
+                document.getElementById('usererror').innerHTML = "Username is required *-*";
+                flag = false;
+            } else if (username.value.length < 4) {
+                document.getElementById('usererror').innerHTML = "Username is too short *-*";
+                flag = false;
+            } else {
+                document.getElementById('usererror').innerHTML = "";
+            }
+
+            // Password validation
+            if (password.value == '') {
+                document.getElementById('passerror').innerHTML = "Password is required *-*";
+                flag = false;
+            } else {
+                document.getElementById('passerror').innerHTML = "";
+            }
+
+            // Email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email.value == '') {
+                document.getElementById('emailerror').innerHTML = "Email is required *-*";
+                flag = false;
+            } else if (!emailPattern.test(email.value)) {
+                document.getElementById('emailerror').innerHTML = "Invalid email format *-*";
+                flag = false;
+            } else {
+                document.getElementById('emailerror').innerHTML = "";
+            }
+
+            // Phone validation
+            const phonePattern = /^\d{10}$/;
+            if (phone.value == '') {
+                document.getElementById('phoneerror').innerHTML = "Phone number is required *-*";
+                flag = false;
+            } else if (!phonePattern.test(phone.value)) {
+                document.getElementById('phoneerror').innerHTML = "Phone number must be 10 digits *-*";
+                flag = false;
+            } else {
+                document.getElementById('phoneerror').innerHTML = "";
+            }
+
+            // Terms and conditions validation
+            if (!terms.checked) {
+                document.getElementById('termserror').innerHTML = "You must agree to the terms and conditions *-*";
+                flag = false;
+            } else {
+                document.getElementById('termserror').innerHTML = "";
+            }
+
+            // Country validation
+            if (country.value == '') {
+                document.getElementById('countryerror').innerHTML = "Please select your country *-*";
+                flag = false;
+            } else {
+                document.getElementById('countryerror').innerHTML = "";
+            }
+
+            return flag;
+        }
+    </script>
+</body>
+</html>
